@@ -46,7 +46,7 @@ export function injectJsError() {
   /**
    * 采用 window.addEventListener，不采用 window.onerror。
    * - 因为 onerror 是事件监听器，后面的声明会覆盖前面的，而 addEventListener 是事件处理器，它可以绑定多个事件
-   * - window.addEventListener 可以监听资源加载错误
+   * - window.onerror 是在冒泡阶段捕获事件，而资源加载失败之后执行资源的 onerror 事件后不会再冒泡，所以应该用 addEventListener 在捕获阶段监听资源加载错误的事件
    * 
    * js 报错时，会触发监听的 error 事件，传入回调的 event 对象是一个 ErrorEvent 实例，只需要关注它以下几个属性
    * - message: 描述发生的错误
@@ -59,18 +59,29 @@ export function injectJsError() {
   window.addEventListener('error', function(event) {
     console.log('js/source event ->', event)
 
-    const {message, filename, lineno, colno, error} = event
-    const data = {
-      kind: 'stability',
-      type: 'jsError',
-      message,
-      filename,
-      position: `${lineno || 0}:${colno || 0}`,
-      stack: getStack(error)
-    }
+    if (event.target && (event.target.href || event.target.src)) {
+      const data = {
+        kind: 'stability',
+        type: 'resourceError',
+        filename: event.target.href || event.target.src, // 文件地址
+        tagName: event.target.tagName // 标签名
+      }
 
-    console.log('js/source data ->', data)
-  })
+      console.log('resource data ->', data)
+    } else {
+      const {message, filename, lineno, colno, error} = event
+      const data = {
+        kind: 'stability',
+        type: 'jsError',
+        message, // 报错信息
+        filename, // 文件名
+        position: `${lineno || 0}:${colno || 0}`, // 报错位置
+        stack: getStack(error) // 报错栈信息
+      }
+
+      console.log('js data ->', data)
+    }
+  }, true) // 这里需要设为 true，才能在捕获阶段捕获到资源错误
 
   /**
    * 有两种情况会触发 promise 变成 rejected 状态：
