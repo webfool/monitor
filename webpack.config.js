@@ -10,7 +10,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
-      inject: 'head'
+      inject: 'head',
+      minify: { // 关闭 js 压缩
+        minifyJS: false
+      }
     })
   ],
   devServer: {

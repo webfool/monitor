@@ -6,6 +6,49 @@
   <title>Document</title>
 </head>
 <body>
-  <span>我是 html</span>
+  <div id="app">
+    <div class="content">
+      <!-- <button onclick="a()">点击报错</button> -->
+    </div>
+  </div>
+
+  <script>
+    function a () {
+      // === js 总共有7种错误 ===
+
+      // 【Error 普通报错】: 主要是供开发者自定义抛出错误
+      // throw new Error('abc')
+
+      // 【SyntaxError 语法报错】常见的有：命名错误、缺少括号
+      // var 1a
+      // console.log('aaa'
+      // JSON.parse('abc')
+
+      // 【ReferenceError 引用报错】: 引用了不存在的变量
+      // console.log(b)
+
+      // 【TypeError 类型报错】：参数不是预期的类型
+      // new 123
+      // [1, 2].split(',')
+
+      // 【RangeError 超出有效范围报错】: 数组长度为负数、堆栈超出最大值
+      // new Array(-1)
+
+      // 【URIError URI相关的函数报错】：常见的函数有 encodeURI、decodeURI、encodeURIComponent、decodeURIComponent、escape、unescape
+      // decodeURI('%2')
+
+      // 【EvalError eval 解析报错】：此种报错已经不会在 es5之后出现了，日常开发也不会遇到了
+
+
+      // === promise 报错 ===
+      new Promise((resolve, reject) => {
+        reject({a: 1})
+        // throw new Error('abc')
+      })
+    }
+
+    a()
+    
+  </script>
 </body>
 </html>

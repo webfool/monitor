@@ -1,1 +1,3 @@
-console.log('bundle!')
+import {injectJsError} from './lib/jsError'
+
+injectJsError()
