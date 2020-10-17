@@ -8,7 +8,7 @@
 <body>
   <div id="app">
     <div class="content">
-      <!-- <button onclick="a()">点击报错</button> -->
+      <input type="button" value="点击报错" onclick="a()" />
     </div>
     <!-- <img src="hij.png" alt=""> -->
   </div>
@@ -46,12 +46,79 @@
         // reject({a: 1})
         // throw new Error('abc')
       // })
+
+      // === ajax 报错 ===
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function (e) {
+        // e.type = 'readystatechange'
+        console.log('【onreadystatechange】 ==>', xhr.readyState, xhr)
+        console.log('【onreadystatechange】 e ->', e)
+      }
+      xhr.open('GET', '/demo')
+      
+      // xhr.timeout = 2000
+
+      // xhr.responseType = 'text'
+      // xhr.responseType = 'json'
+      // xhr.responseType = 'blob'
+      xhr.responseType = 'arraybuffer'
+      // xhr.responseType = 'document'
+
+      xhr.addEventListener('abort', function (e) {
+        // e.type = 'abort'
+        console.log('【abort】e ->', e)
+        console.log('【abort】xhr ->', xhr)
+      }, false)
+
+      xhr.addEventListener('timeout', function (e) {
+        // e.type = 'timeout'
+        console.log('【timeout】e ->', e)
+        console.log('【timeout】xhr ->', xhr)
+      }, false)
+
+      xhr.addEventListener('error', function (e) {
+        // e.type = 'error'
+        console.log('【error】e ->', e)
+        console.log('【error】xhr ->', xhr)
+      }, false)
+
+      xhr.addEventListener('load', function (e) {
+        console.log('【load】e ->', e)
+        console.log('【load】xhr ->', xhr)
+        console.log('【load】type ->', typeof xhr.response)
+        console.log('【load】response ->', xhr.response)
+
+        if (xhr.responseType === 'blob') {
+          const fileReader = new FileReader()
+          fileReader.onload = function () {
+            console.log('blob result ->', this.result)
+          }
+          fileReader.readAsText(xhr.response)
+        } else if (xhr.responseType === 'arraybuffer') {
+          const decoder = new TextDecoder()
+          console.log('arraybuffer result ->', decoder.decode(xhr.response))
+        }
+        
+        // console.log('【load】responseText ->', xhr.responseText)
+        // console.log('【load】responseXML ->', xhr.responseXML)
+      }, false)
+
+      xhr.addEventListener('loadend', function (e) {
+        // e.type = 'loadend'
+        console.log('【onloaded】 e ->', e)
+      }, false)
+      
+      xhr.send(JSON.stringify({name: 'hw'}))
+
+      // setTimeout(() => {
+      //   xhr.abort()
+      // }, 2000)
     }
 
-    a()
+    // a()
     
   </script>
   <!-- <script src="abc.js"></script> -->
-  <link rel="stylesheet" href="efg.css">
+  <!-- <link rel="stylesheet" href="efg.css"> -->
 </body>
 </html>

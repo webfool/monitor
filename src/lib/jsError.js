@@ -29,7 +29,7 @@
  * stack：描述执行堆栈信息的字符串
  *
  */
-
+import tracker from '../lib/tracker'
 
 // 格式化 error 的 stack 信息
 function getStack(error) {
@@ -67,7 +67,7 @@ export function injectJsError() {
         tagName: event.target.tagName // 标签名
       }
 
-      console.log('resource data ->', data)
+      tracker(data)
     } else {
       const {message, filename, lineno, colno, error} = event
       const data = {
@@ -79,7 +79,7 @@ export function injectJsError() {
         stack: getStack(error) // 报错栈信息
       }
 
-      console.log('js data ->', data)
+      tracker(data)
     }
   }, true) // 这里需要设为 true，才能在捕获阶段捕获到资源错误
 
@@ -123,6 +123,7 @@ export function injectJsError() {
       position,
       stack
     }
-    console.log('promise data ->', data)
+
+    tracker(data)
   })
 }
