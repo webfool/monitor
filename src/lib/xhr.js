@@ -28,6 +28,8 @@ export function injectXHR() {
 
   XMLHttpRequest.prototype.send = function (param) {
     const {method, url} = this.logData
+
+    const startTime = Date.now()
     function createHandler(eventType) {
       return function () {
         const {responseType, status, statusText, response} = this
@@ -46,7 +48,8 @@ export function injectXHR() {
           url,
           params: getParams(param),
           status: `${status} - ${statusText}`,
-          response: response || ''
+          response: response || '',
+          duration: Date.now() - startTime
         }
 
         const isBlobRes = responseType === 'blob'
