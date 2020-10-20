@@ -1,3 +1,5 @@
+// 【当前模块功能：监控 js 代码报错、监控 promise 报错，监听资源加载错误】
+
 /**
  * === js 总共有7种错误 ===
  * 【Error 普通报错】: 主要是供开发者自定义抛出错误
@@ -29,7 +31,7 @@
  * stack：描述执行堆栈信息的字符串
  *
  */
-import tracker from '../lib/tracker'
+import tracker from './tracker'
 
 // 格式化 error 的 stack 信息
 function getStack(error) {

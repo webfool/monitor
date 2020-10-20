@@ -1,5 +1,7 @@
+// 【当前模块监听 xhr 请求】
+
 import {isFormData, isBlob, isArrayBuffer} from '../utils'
-import tracker from '../lib/tracker'
+import tracker from './tracker'
 
 // 传递给 xhr.open 的参数有以下几种类型：null、string、formData、blob、arrayBuffer。
 // 需要注意的是，如果 content-type: application/json，xhr.open 的参数是对象经过 JSON.stringify 之后的字符串
