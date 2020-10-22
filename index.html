@@ -10,6 +10,9 @@
     <div class="content">
       <input type="button" value="点击报错" onclick="a()" />
       <input type="button" value="发起fetch请求" onclick="testFetch()" />
+      <input type="button" value="hashchange" onclick="testHashchange()">
+      <input type="button" value="pushState" onclick="testPushState()">
+      <input type="button" value="replaceState" onclick="testReplaceState()">
     </div>
     <!-- <img src="hij.png" alt=""> -->
   </div>
@@ -171,6 +174,20 @@
       })
     }
     
+
+    function testHashchange() {
+      window.location.hash = `abc${Math.random()}`
+    }
+
+    function testPushState() {
+      history.pushState(null, null, `efg${Math.random()}`)
+    }
+
+    function testReplaceState() {
+      history.replaceState(null, null, `hij${Math.random()}`)
+    }
+
+
   </script>
   <!-- <script src="abc.js"></script> -->
   <!-- <link rel="stylesheet" href="efg.css"> -->
