@@ -30,6 +30,20 @@ module.exports = {
           // res.json({data: 'myDemoData'})
         }, 0)
       })
+
+      app.post('/demo', function (req, res) {
+        setTimeout(() => {
+          res.status(500).send('some error happen')
+          // res.json({data: 'myDemoData'})
+        }, 0)
+      })
+
+      app.put('/demo', function (req, res) {
+        setTimeout(() => {
+          res.status(500).send('some error happen')
+          // res.json({data: 'myDemoData'})
+        }, 0)
+      })
     }
   }
 }

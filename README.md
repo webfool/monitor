@@ -14,5 +14,4 @@ todo:
 - [ ] 请求资源时，判断如果是用于上报的接口报错时，不再重新上报
 - [ ] tracker 上报代码的具体实现
 - [ ] 监控是否白屏
-- [ ] fetch 拦截
 - [ ] 性能监控中，计算 FMP（first meaning paint）、计算资源加载时间 resload

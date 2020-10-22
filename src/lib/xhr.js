@@ -56,6 +56,7 @@ export function injectXHR() {
 
         const isBlobRes = responseType === 'blob'
 
+        // 服务端报错时，报错信息被转 blob 或 arrayBuffer，需要解析出来
         if (eventType === 'loadError') {
           const isArrayBufferRes = responseType === 'arraybuffer'
 

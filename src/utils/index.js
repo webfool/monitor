@@ -11,3 +11,7 @@ export function isBlob(obj) {
 export function isArrayBuffer(obj) {
   return toString.call(obj) === '[object ArrayBuffer]'
 }
+
+export function isURLSearchParams(obj) {
+  return toString.call(obj) === '[object URLSearchParams]'
+}

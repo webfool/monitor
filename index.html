@@ -9,6 +9,7 @@
   <div id="app">
     <div class="content">
       <input type="button" value="点击报错" onclick="a()" />
+      <input type="button" value="发起fetch请求" onclick="testFetch()" />
     </div>
     <!-- <img src="hij.png" alt=""> -->
   </div>
@@ -122,6 +123,53 @@
     //   const start = Date.now()
     //   while(Date.now() - start < 2000) {}
     // })
+
+
+    function testFetch() {
+      const searchParams = new URLSearchParams()
+      searchParams.set("topic", "More webdev");
+      searchParams.set("name", "hw");
+
+      const formData = new FormData()
+      formData.append('name', 'hw')
+
+      const blob = new Blob(['abc'])
+
+      const request = new Request('/demo', {
+        method: 'post',
+        headers: {
+          // 'content-type': 'application/json;charset=utf-8'
+        },
+        // body: 'abc',
+        // body: JSON.stringify({from: 'gd'})
+        // body: searchParams
+        // body: formData
+        body: blob
+      })
+
+      // fetch('/demo', {
+      //   method: 'post',
+      //   headers: {
+      //     'content-type': 'application/json;charset=utf-8'
+      //   },
+      //   body: JSON.stringify({name: 'hw'})
+      // }).then(res => {
+      fetch(request, {
+        headers: {
+          // 'content-type': 'application/json;charset=utf-8'
+        },
+        method: 'put',
+        // body: 'abc',
+        // body: JSON.stringify({from: 'gd'})
+        // body: searchParams
+        // body: formData
+        // body: blob
+      }).then(res => {
+        console.log('res ->', res)
+      }).catch(err => {
+        console.log('err ->', err)
+      })
+    }
     
   </script>
   <!-- <script src="abc.js"></script> -->

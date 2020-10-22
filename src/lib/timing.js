@@ -27,6 +27,8 @@ export function timing () {
     
       // 目前缺少：fmp
       // 待定：resload
+      const fp = performance.getEntriesByName('first-paint')[0]
+      const fcp = performance.getEntriesByName('first-contentful-paint')[0]
       const data = {
         redirect: redirectEnd - redirectStart, // 重定向时间
         appCache: domainLookupStart - fetchStart, // 获取缓存的时间
@@ -42,8 +44,8 @@ export function timing () {
         tti: domInteractive - fetchStart, // 【insight】Time to Interactive 首次可交互时间
         dcl: domContentLoadedEventEnd - domContentLoadedEventStart, // DomContentLoad 事件耗时
         domReady: domContentLoadedEventEnd - fetchStart, // 【insight】html加载完成时间
-        fp: performance.getEntriesByName('first-paint')[0].startTime, // 浏览器绘制非默认背景的第一帧的时间
-        fcp: performance.getEntriesByName('first-contentful-paint')[0].startTime, // 【insight】浏览器绘制文本、图片、非空白的canvas 或 SVG 的第一帧的时间
+        fp: fp ? fp.startTime : 0, // 浏览器绘制非默认背景的第一帧的时间
+        fcp: fcp ? fcp.startTime : 0, // 【insight】浏览器绘制文本、图片、非空白的canvas 或 SVG 的第一帧的时间
         resload: loadEventStart - domContentLoadedEventEnd, // 【insight】未知
         loaded: loadEventStart - fetchStart, // 【insight】资源完全加载完成的时间
         loadEvent: loadEventEnd - loadEventStart, // load 事件处理耗时
