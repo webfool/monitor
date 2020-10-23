@@ -23,7 +23,7 @@ export function injectPv() {
   window.history.pushState = bindEvent('pushState', window.history.pushState)
   window.history.replaceState = bindEvent('replaceState', window.history.replaceState)
 
-  const PV_EVENTS = ['hashchange', 'popState', 'pushState', 'replaceState']
+  const PV_EVENTS = ['hashchange', 'popstate', 'pushState', 'replaceState']
   PV_EVENTS.forEach(eventName => {
     window.addEventListener(eventName, function() {
       const path = eventName === 'hashchange' ? location.hash.slice(1) : location.pathname

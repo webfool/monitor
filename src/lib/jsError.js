@@ -59,8 +59,6 @@ export function injectJsError() {
    * todo: 信息从 error 里去获取
    */
   window.addEventListener('error', function(event) {
-    console.log('js/source event ->', event)
-
     if (event.target && (event.target.href || event.target.src)) {
       const data = {
         kind: 'stability',
@@ -96,8 +94,6 @@ export function injectJsError() {
    * - reason：promise 变成 rejected 状态的原因，它的值可能是 <主动调用 reject 方法传递的参数> 或者 <promise 内部报错时抛出的错误对象>
    */
   window.addEventListener('unhandledrejection', function (event) {
-    console.log('promise event ->', event)
-
     const {promise, reason} = event
 
     let message = ''

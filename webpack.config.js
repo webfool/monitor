@@ -28,7 +28,7 @@ module.exports = {
         setTimeout(() => {
           res.status(500).send('some error happen')
           // res.json({data: 'myDemoData'})
-        }, 0)
+        }, 5000)
       })
 
       app.post('/demo', function (req, res) {

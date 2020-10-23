@@ -8,17 +8,26 @@
 <body>
   <div id="app">
     <div class="content">
-      <input type="button" value="点击报错" onclick="a()" />
-      <input type="button" value="发起fetch请求" onclick="testFetch()" />
+      <input type="button" value="触发 js 报错" onclick="testJsError()"/>
+      <input type="button" value="触发 promise 报错" onclick="testPromiseError()"/>
+      <input type="button" value="触发 资源请求 报错" onclick="testResourceError()"/>
+      <input type="button" value="触发 xhr 中止报错" onclick="testXhrAbortError()"/>
+      <input type="button" value="触发 xhr 超时报错" onclick="testXhrTimeoutError()"/>
+      <input type="button" value="触发 xhr 网络异常报错" onclick="testXhrNetworkError()"/>
+      <input type="button" value="触发 xhr http状态码异常 报错" onclick="testXhrHttpError()"/>
+      <input type="button" value="触发 fetch 网络异常报错" onclick="testFetchNetworkError()"/>
+      <input type="button" value="触发 fetch http 状态码异常 报错" onclick="testFetchHttpError()"/>
       <input type="button" value="hashchange" onclick="testHashchange()">
       <input type="button" value="pushState" onclick="testPushState()">
       <input type="button" value="replaceState" onclick="testReplaceState()">
+      <input type="button" value="popState 回退" onclick="testPopStateAfter()">
+      <input type="button" value="popState 前进" onclick="testPopStateFront()">
     </div>
-    <!-- <img src="hij.png" alt=""> -->
   </div>
 
   <script>
-    function a () {
+    // 测试 js 报错
+    function testJsError() {
       // === js 总共有7种错误 ===
 
       // 【Error 普通报错】: 主要是供开发者自定义抛出错误
@@ -43,153 +52,120 @@
       // decodeURI('%2')
 
       // 【EvalError eval 解析报错】：此种报错已经不会在 es5之后出现了，日常开发也不会遇到了
-
-
-      // === promise 报错 ===
-      // new Promise((resolve, reject) => {
-        // reject({a: 1})
-        // throw new Error('abc')
-      // })
-
-      // === ajax 报错 ===
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function (e) {
-        // e.type = 'readystatechange'
-        console.log('【onreadystatechange】 ==>', xhr.readyState, xhr)
-        console.log('【onreadystatechange】 e ->', e)
-      }
-      xhr.open('GET', '/demo')
-      
-      // xhr.timeout = 2000
-
-      // xhr.responseType = 'text'
-      // xhr.responseType = 'json'
-      // xhr.responseType = 'blob'
-      xhr.responseType = 'arraybuffer'
-      // xhr.responseType = 'document'
-
-      xhr.addEventListener('abort', function (e) {
-        // e.type = 'abort'
-        console.log('【abort】e ->', e)
-        console.log('【abort】xhr ->', xhr)
-      }, false)
-
-      xhr.addEventListener('timeout', function (e) {
-        // e.type = 'timeout'
-        console.log('【timeout】e ->', e)
-        console.log('【timeout】xhr ->', xhr)
-      }, false)
-
-      xhr.addEventListener('error', function (e) {
-        // e.type = 'error'
-        console.log('【error】e ->', e)
-        console.log('【error】xhr ->', xhr)
-      }, false)
-
-      xhr.addEventListener('load', function (e) {
-        console.log('【load】e ->', e)
-        console.log('【load】xhr ->', xhr)
-        console.log('【load】type ->', typeof xhr.response)
-        console.log('【load】response ->', xhr.response)
-
-        if (xhr.responseType === 'blob') {
-          const fileReader = new FileReader()
-          fileReader.onload = function () {
-            console.log('blob result ->', this.result)
-          }
-          fileReader.readAsText(xhr.response)
-        } else if (xhr.responseType === 'arraybuffer') {
-          const decoder = new TextDecoder()
-          console.log('arraybuffer result ->', decoder.decode(xhr.response))
-        }
-        
-        // console.log('【load】responseText ->', xhr.responseText)
-        // console.log('【load】responseXML ->', xhr.responseXML)
-      }, false)
-
-      xhr.addEventListener('loadend', function (e) {
-        // e.type = 'loadend'
-        console.log('【onloaded】 e ->', e)
-      }, false)
-      
-      xhr.send(JSON.stringify({name: 'hw'}))
-
-      // setTimeout(() => {
-      //   xhr.abort()
-      // }, 2000)
     }
 
-    // a()
-
-    // window.addEventListener('DOMContentLoaded', function() {
-    //   console.log('domContentLoaded')
-    //   const start = Date.now()
-    //   while(Date.now() - start < 2000) {}
-    // })
-
-
-    function testFetch() {
-      const searchParams = new URLSearchParams()
-      searchParams.set("topic", "More webdev");
-      searchParams.set("name", "hw");
-
-      const formData = new FormData()
-      formData.append('name', 'hw')
-
-      const blob = new Blob(['abc'])
-
-      const request = new Request('/demo', {
-        method: 'post',
-        headers: {
-          // 'content-type': 'application/json;charset=utf-8'
-        },
-        // body: 'abc',
-        // body: JSON.stringify({from: 'gd'})
-        // body: searchParams
-        // body: formData
-        body: blob
+    // 测试 promise 报错
+    function testPromiseError() {
+      new Promise((resolve, reject) => {
+        // throw new Error('abc')
+        // reject({a: 1})
+        // reject('abc')
       })
+    }
 
-      // fetch('/demo', {
-      //   method: 'post',
-      //   headers: {
-      //     'content-type': 'application/json;charset=utf-8'
-      //   },
-      //   body: JSON.stringify({name: 'hw'})
-      // }).then(res => {
-      fetch(request, {
+    // 测试资源报错
+    function testResourceError() {
+      const head = document.getElementsByTagName('head')[0]
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = '/abc.js'
+      head.appendChild(script)
+    }
+
+    // 测试 xhr 中止报错
+    function testXhrAbortError() {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', '/demo')
+      xhr.setRequestHeader('content-type', 'application/json;charset=utf-8')
+      xhr.responseType = 'json'
+      xhr.send(JSON.stringify({group: 'Risk&DC'}))
+      setTimeout(() => {
+        xhr.abort()
+      }, 2000)
+    }
+
+    // 测试 xhr 超时报错
+    function testXhrTimeoutError() {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', '/demo')
+      xhr.setRequestHeader('content-type', 'application/json;charset=utf-8')
+      xhr.timeout = 2000
+      xhr.responseType = 'json'
+      xhr.send(JSON.stringify({name: 'hw'}))
+    }
+
+    // 测试 xhr 网络错误报错
+    function testXhrNetworkError() {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', '/demo')
+      xhr.setRequestHeader('content-type', 'application/json;charset=utf-8')
+      xhr.responseType = 'json'
+      xhr.send(JSON.stringify({name: 'hw'}))
+    }
+
+    // 测试 xhr http 请求报错
+    function testXhrHttpError() {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', '/demo')
+      xhr.setRequestHeader('content-type', 'application/json;charset=utf-8')
+      xhr.responseType = 'json'
+      xhr.send(JSON.stringify({name: 'hw'}))
+    }
+
+    // 测试 fetch 网络错误报错
+    function testFetchNetworkError() {
+      fetch('/demo', {
+        method: 'get',
         headers: {
-          // 'content-type': 'application/json;charset=utf-8'
-        },
-        method: 'put',
-        // body: 'abc',
-        // body: JSON.stringify({from: 'gd'})
-        // body: searchParams
-        // body: formData
-        // body: blob
-      }).then(res => {
+          'content-type': 'application/json;charset=utf-8'
+        }
+      }).then((res) => {
         console.log('res ->', res)
-      }).catch(err => {
+      }).catch((err) => {
         console.log('err ->', err)
       })
     }
-    
 
+    // 测试 fetch http 请求报错
+    function testFetchHttpError() {
+      fetch('/demo', {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({group: 'Risk&DC'})
+      }).then((res) => {
+        console.log('res ->', res)
+      }).catch((err) => {
+        console.log('err ->', err)
+      })
+    }
+
+    // 测试 hash 路由改变
     function testHashchange() {
       window.location.hash = `abc${Math.random()}`
     }
 
+    // 测试 history 路由进入新页面
     function testPushState() {
       history.pushState(null, null, `efg${Math.random()}`)
     }
 
+    // 测试 history 路由替换当前页面
     function testReplaceState() {
       history.replaceState(null, null, `hij${Math.random()}`)
     }
 
+    // 测试 history 路由向后跳转
+    function testPopStateAfter() {
+      history.go(-2)
+    }
+
+    // 测试 history 路由向前跳转
+    function testPopStateFront() {
+      history.go(2)
+    }
 
   </script>
-  <!-- <script src="abc.js"></script> -->
-  <!-- <link rel="stylesheet" href="efg.css"> -->
 </body>
 </html>
