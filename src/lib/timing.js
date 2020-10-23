@@ -1,5 +1,8 @@
 import tracker from './tracker'
 
+/**
+ * 思路：借助 performance 对象统计的性能数据进行计算和上报
+ */
 export function timing () {
   window.addEventListener('load', function () {
     setTimeout(() => {

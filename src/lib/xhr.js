@@ -12,6 +12,8 @@ function getParams(param) {
 }
 
 /**
+ * xhr 实现思路：重写 xhr 的 open 和 send 方法，用于收集请求数据，再监听 ajax 的4种异常情况，进行错误收集。
+ * 
  * ajax 异常的情况有4种
  * - abort
  * - timeout

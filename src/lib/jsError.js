@@ -32,6 +32,7 @@
  *
  */
 import tracker from './tracker'
+import {isError} from '../utils'
 
 // 格式化 error 的 stack 信息
 function getStack(error) {
@@ -39,10 +40,12 @@ function getStack(error) {
   return error.stack.split('\n').slice(1).map(item => item.replace(/\s+at\s+/g, '')).join(' <- ')
 }
 
-// 判断一个对象是否是 Error
-function isError(o) {
-  return Object.prototype.toString.call(o) === '[object Error]'
-}
+/**
+  * 思路：
+  * - 【全局报错】全局未被捕获的错误会被 window 的 error 事件捕获到，可以通过 window.addEventListener('error') 或者 window.onerror 监听
+  * - 【资源报错】资源请求错误时，能被 window 的 error 事件在捕获阶段捕获到，不能在冒泡阶段捕获到，所以通过 window.addEventListener('error', fn, true) 监听
+  * - 【promise报错】未被捕获的 promise 错误会被 window 的 unhandledrejection 事件捕获
+ */
 
 export function injectJsError() {
   /**
@@ -56,7 +59,6 @@ export function injectJsError() {
    * - lineno: 发生错误的行数
    * - colno: 发生错误的列数
    * 
-   * todo: 信息从 error 里去获取
    */
   window.addEventListener('error', function(event) {
     if (event.target && (event.target.href || event.target.src)) {

@@ -15,3 +15,8 @@ export function isArrayBuffer(obj) {
 export function isURLSearchParams(obj) {
   return toString.call(obj) === '[object URLSearchParams]'
 }
+
+// 判断一个对象是否是 Error
+function isError(o) {
+  return Object.prototype.toString.call(o) === '[object Error]'
+}

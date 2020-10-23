@@ -1,6 +1,9 @@
 import tracker from './tracker'
 import { isURLSearchParams } from '../utils'
 
+/**
+ * fetch 实现思路：重写 fetch 方法，在原生 fetch 成功的 then 以及失败的 catch 插入错误数据上报的逻辑
+ */
 export function injectFetch() {
   const oldFetch = window.fetch
 
