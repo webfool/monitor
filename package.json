@@ -1,6 +1,6 @@
 {
   "dependencies": {},
-  "version": "1.1.1",
+  "version": "2.0.0",
   "devDependencies": {
     "html-webpack-plugin": "^4.5.0",
     "webpack": "^5.1.0",
