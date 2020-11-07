@@ -17,6 +17,6 @@ export function isURLSearchParams(obj) {
 }
 
 // 判断一个对象是否是 Error
-function isError(o) {
+export function isError(o) {
   return Object.prototype.toString.call(o) === '[object Error]'
 }

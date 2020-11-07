@@ -33,6 +33,8 @@ export function timing () {
       const fp = performance.getEntriesByName('first-paint')[0]
       const fcp = performance.getEntriesByName('first-contentful-paint')[0]
       const data = {
+        kind: 'experience',
+        type: 'timing',
         redirect: redirectEnd - redirectStart, // 重定向时间
         appCache: domainLookupStart - fetchStart, // 获取缓存的时间
         dns: domainLookupEnd - domainLookupStart, // 【insight】 获取dns解析时间

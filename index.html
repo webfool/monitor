@@ -8,20 +8,55 @@
 <body>
   <div id="app">
     <div class="content">
-      <input type="button" value="触发 js 报错" onclick="testJsError()"/>
-      <input type="button" value="触发 promise 报错" onclick="testPromiseError()"/>
-      <input type="button" value="触发 资源请求 报错" onclick="testResourceError()"/>
-      <input type="button" value="触发 xhr 中止报错" onclick="testXhrAbortError()"/>
-      <input type="button" value="触发 xhr 超时报错" onclick="testXhrTimeoutError()"/>
-      <input type="button" value="触发 xhr 网络异常报错" onclick="testXhrNetworkError()"/>
-      <input type="button" value="触发 xhr http状态码异常 报错" onclick="testXhrHttpError()"/>
-      <input type="button" value="触发 fetch 网络异常报错" onclick="testFetchNetworkError()"/>
-      <input type="button" value="触发 fetch http 状态码异常 报错" onclick="testFetchHttpError()"/>
-      <input type="button" value="hashchange" onclick="testHashchange()">
-      <input type="button" value="pushState" onclick="testPushState()">
-      <input type="button" value="replaceState" onclick="testReplaceState()">
-      <input type="button" value="popState 回退" onclick="testPopStateAfter()">
-      <input type="button" value="popState 前进" onclick="testPopStateFront()">
+      <div style="margin-bottom: 20px;">
+        <h3>报错：</h3>
+        <input type="button" value="触发 js 报错" onclick="testJsError()"/>
+        <input type="button" value="触发 promise 报错" onclick="testPromiseError()"/>
+        <input type="button" value="触发 资源请求 报错" onclick="testResourceError()"/>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h3>XHR：</h3>
+        <input type="button" value="触发 xhr 中止报错" onclick="testXhrAbortError()"/>
+        <input type="button" value="触发 xhr 超时报错" onclick="testXhrTimeoutError()"/>
+        <input type="button" value="触发 xhr 网络异常报错" onclick="testXhrNetworkError()"/>
+        <input type="button" value="触发 xhr http状态码异常 报错" onclick="testXhrHttpError()"/>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h3>fetch：</h3>
+        <input type="button" value="触发 fetch 网络异常报错" onclick="testFetchNetworkError()"/>
+        <input type="button" value="触发 fetch http 状态码异常 报错" onclick="testFetchHttpError()"/>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h3>路由：</h3>
+        <input type="button" value="hashchange" onclick="testHashchange()">
+        <input type="button" value="pushState" onclick="testPushState()">
+        <input type="button" value="replaceState" onclick="testReplaceState()">
+        <input type="button" value="popState 回退" onclick="testPopStateAfter()">
+        <input type="button" value="popState 前进" onclick="testPopStateFront()">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h3>白屏之js报错触发：</h3>
+        <input type="button" value="js报错触发 - 有文本的非白屏" onclick="testJsErrorTextUnWhiteScreen('js')">
+        <input type="button" value="js报错触发 - 有图片的非白屏" onclick="testJsErrorImgUnWhiteScreen('js')">
+        <input type="button" value="js报错触发 - 有canvas内容的非白屏" onclick="testJsErrorCanvasUnWhiteScreen('js')">
+        <input type="button" value="js报错触发 - 无文本内容的白屏" onclick="testJsErrorTextWhiteScreen('js')">
+        <input type="button" value="js报错触发 - 图片加载失败的白屏" onclick="testJsErrorImgWhiteScreen('js')">
+        <input type="button" value="js报错触发 - 无canvas内容的白屏" onclick="testJsErrorCanvasWhiteScreen('js')">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h3>白屏之资源加载失败触发：</h3>
+        <input type="button" value="资源加载报错触发 - 有文本的非白屏" onclick="testJsErrorTextUnWhiteScreen('source')">
+        <input type="button" value="资源加载报错触发 - 有图片的非白屏" onclick="testJsErrorImgUnWhiteScreen('source')">
+        <input type="button" value="资源加载报错触发 - 有canvas内容的非白屏" onclick="testJsErrorCanvasUnWhiteScreen('source')">
+        <input type="button" value="资源加载报错触发 - 无文本内容的白屏" onclick="testJsErrorTextWhiteScreen('source')">
+        <input type="button" value="资源加载报错触发 - 图片加载失败的白屏" onclick="testJsErrorImgWhiteScreen('source')">
+        <input type="button" value="资源加载报错触发 - 无canvas内容的白屏" onclick="testJsErrorCanvasWhiteScreen('source')">
+      </div>
     </div>
   </div>
 
@@ -166,6 +201,117 @@
       history.go(2)
     }
 
+    // === 以下测试白屏 ===
+    function initSource() {
+      const script = document.createElement('script')
+      script.src = 'abc.js'
+      document.head.appendChild(script)
+    }
+
+    // 测试 js 报错或资源加载错误时，有文本的非白屏
+    function testJsErrorTextUnWhiteScreen(type) {
+      document.body.innerText = 'abc'
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
+
+    // 测试 js 报错或资源加载错误时，无文本的白屏
+    function testJsErrorTextWhiteScreen(type) {
+      document.body.innerText = ''
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
+
+    // 测试 js 报错或资源加载错误时，有图片的非白屏
+    function testJsErrorImgUnWhiteScreen(type) {
+      document.body.innerText = ''
+
+      const img1 = document.createElement('img')
+      const img2 = document.createElement('img')
+      img1.src = 'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png'
+      img2.src = 'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png'
+      document.body.appendChild(img1)
+      document.body.appendChild(img2)
+
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
+
+    // 测试 js 报错时，图片加载失败的白屏
+    function testJsErrorImgWhiteScreen(type) {
+      document.body.innerText = ''
+
+      const img1 = document.createElement('img')
+      const img2 = document.createElement('img')
+      img1.width = 100
+      img1.height = 100
+      img1.src = 'abc.png'
+
+      img2.width = 100
+      img2.height = 100
+      img2.src = 'efg.png'
+      document.body.appendChild(img1)
+      document.body.appendChild(img2)
+
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
+
+    // 测试 js 报错时，canvas 有内容的非白屏
+    function testJsErrorCanvasUnWhiteScreen(type) {
+      document.body.innerText = ''
+
+      const canvas1 = document.createElement('canvas')
+      const canvas2 = document.createElement('canvas')
+
+      canvas1.width = 400
+      canvas1.height = 400
+      const ctx1 = canvas1.getContext('2d')
+      ctx1.fillRect(10, 10, 50, 50)
+
+      canvas2.width = 400
+      canvas2.height = 400
+      const ctx2 = canvas2.getContext('2d')
+      ctx2.fillRect(10, 10, 50, 50)
+
+      document.body.appendChild(canvas1)
+      document.body.appendChild(canvas2)
+
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
+
+    // 测试 js 报错时，canvas 无内容的白屏
+    function testJsErrorCanvasWhiteScreen(type) {
+      document.body.innerText = ''
+
+      const canvas1 = document.createElement('canvas')
+      const canvas2 = document.createElement('canvas')
+
+      canvas1.width = 400
+      canvas1.height = 400
+
+      canvas2.width = 400
+      canvas2.height = 400
+
+      document.body.appendChild(canvas1)
+      document.body.appendChild(canvas2)
+
+      setTimeout(() => {
+        if (type === 'js') throw new Error('')
+        else initSource()
+      }, 1000)
+    }
   </script>
 </body>
 </html>
