@@ -6,7 +6,7 @@
  * - 无同源限制
  *  - jsonp
  *  - img
- *  - navigator.sendBeacon:
+ *  - navigator.sendBeacon
  * 
  * 在页面 unload 前上报，可能会出现页面跳转后请求还未真正发起，造成请求被取消，解决方案有：
  * - 使用同步 xhr 上传

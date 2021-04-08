@@ -53,7 +53,7 @@ export function injectJsError() {
    * - 因为 onerror 是事件监听器，后面的声明会覆盖前面的，而 addEventListener 是事件处理器，它可以绑定多个事件
    * - window.onerror 是在冒泡阶段捕获事件，而资源加载失败之后执行资源的 onerror 事件后不会再冒泡，所以应该用 addEventListener 在捕获阶段监听资源加载错误的事件
    * 
-   * js 报错时，会触发监听的 error 事件，传入回调的 event 对象是一个 ErrorEvent 实例，只需要关注它以下几个属性
+   * js 报错时，会触发监听的 error 事件，传入回调的 event 对象是一个 ErrorEvent 实例，只需要关注它以下几个属性，filename、lineno、colno 用于 sourcemap 映射
    * - message: 描述发生的错误
    * - filename: 发生错误的文件
    * - lineno: 发生错误的行数
